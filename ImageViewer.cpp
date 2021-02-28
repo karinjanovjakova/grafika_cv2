@@ -72,12 +72,12 @@ void ImageViewer::ViewerWidgetMouseButtonPress(ViewerWidget* w, QEvent* event)
 				prvybod = false;
 				//qDebug() << "mal by kreslit";
 			}
-			if (ui->DDA->isChecked()) {
+			if (ui->Bres->isChecked()) {
 				getCurrentViewerWidget()->usecka_Bresenham(A, B, farba);
 				prvybod = false;
 				//qDebug() << "mal by kreslit bresenham";
 			}
-			if (ui->DDA->isChecked()) {
+			if (ui->kruznica->isChecked()) {
 				getCurrentViewerWidget()->kruznica(A, B, farba);
 				prvybod = false;
 				//qDebug() << "mal by kreslit kruznicu";

@@ -91,7 +91,6 @@ void ViewerWidget::usecka_DDA(QPoint A, QPoint B, QColor color) {
 	int x, y, x2, y2 ;
 	double chyba = 0;
 	if (B.y() == A.y()) {
-		//painter->drawLine(A.x(), A.y(), B.x(), A.y());
 		int delta = abs(A.x() - B.x()), x1;
 		if (A.x() < B.x())
 			x1 = A.x();
@@ -104,11 +103,12 @@ void ViewerWidget::usecka_DDA(QPoint A, QPoint B, QColor color) {
 		double smernica = (B.y() - A.y()) / (double)(B.x() - A.x());
 		double posun;
 		if (abs(smernica) < 1) {											//riadiaca os x
-			//qDebug() << "idem podla x \n, smernica je "<<smernica<<"\n";
-			if (A.x() < B.x())
-				 x = A.x(), y = A.y(), x2 = B.x();
-			else if (A.x() > B.x())
-				 x = B.x(), y = B.y(), x2 = A.x();
+			if (A.x() < B.x()) {
+				x = A.x(); y = A.y(); x2 = B.x();
+			}
+			else if (A.x() > B.x()) {
+				x = B.x(); y = B.y(); x2 = A.x();
+			}
 			else if (A.x() == B.x()) {
 				int delta = abs(A.y() - B.y()), y1;
 				if (A.y() < B.y())
@@ -134,7 +134,6 @@ void ViewerWidget::usecka_DDA(QPoint A, QPoint B, QColor color) {
 						y--;
 					posun += 1;
 				}
-				//qDebug() << "x= " << x << "    y=" << y << "\n";
 			}
 		}
 		else {																//riadiaca os y
@@ -153,7 +152,6 @@ void ViewerWidget::usecka_DDA(QPoint A, QPoint B, QColor color) {
 					x++;
 					posun += 1;
 				}
-				//qDebug() << "x= " << x << "    y="<<  y <<  "\n";
 			}
 		}
 	}
@@ -161,7 +159,117 @@ void ViewerWidget::usecka_DDA(QPoint A, QPoint B, QColor color) {
 }
 
 void ViewerWidget::usecka_Bresenham(QPoint A, QPoint B, QColor color) {
+	int dx, dy, p, x, y, x2, y2;
+	if (B.y() == A.y()) {
+		int delta = abs(A.x() - B.x()), x1;
+		if (A.x() < B.x())
+			x1 = A.x();
+		else
+			x1 = B.x();
+		for (x = 0; x < delta; x++)
+			setPixel(x + x1, A.y(), color);
+	}
+	else {
+		double smernica = (B.y() - A.y()) / (double)(B.x() - A.x());
+		if (smernica < 1 && smernica >= 0) {
+			if (A.x() < B.x()) {
+				x = A.x();	y = A.y();	x2 = B.x();
+				dx = B.x() - A.x();	dy = B.y() - A.y();
+			}
+			else if (A.x() > B.x()) {
+				x = B.x(); y = B.y(); x2 = A.x();
+				dx = A.x() - B.x();	dy = A.y() - B.y();
+			}
+			p = 2 * dy - dx;
+			do {
+				if (p > 0)
+				{
+					y++;
+					p += 2 * dy - 2 * dx;
+				}
+				else
+				{
+					p = p + 2 * dy;
+				}
+				x++;
+				setPixel(x, y, color);
+			} while (x < x2);
+		}
+		else if (smernica > -1 && smernica < 0) {
+			if (A.x() < B.x()) {
+				x = A.x();	y = A.y();	x2 = B.x();
+				dx = B.x() - A.x();	dy = B.y() - A.y();
+			}
+			else if (A.x() > B.x()) {
+				x = B.x(); y = B.y(); x2 = A.x();
+				dx = A.x() - B.x();	dy = A.y() - B.y();
+			}
+			p = 2 * dy + dx;
+			do {
+				if (p < 0)
+				{
+					y--;
+					p += 2 * dy + 2 * dx;
+				}
+				else
+				{
+					p += 2 * dy;
+				}
+				x++;
+				setPixel(x, y, color);
+			} while (x < x2);
+		}
+		else if (smernica < -1) {
+			if (A.y() < B.y()) {
+				y = A.y();	x = A.x();	y2 = B.y();
+				dy = B.y() - A.y();	dx = B.x() - A.x();
+			}
+			else if (A.y() > B.y()) {
+				y = B.y(); x = B.x(); y2 = A.y();
+				dx = A.x() - B.x();	dy = A.y() - B.y();
+			}
+			p = 2 * dx + dy;
+			do {
+				if (p < 0)
+				{
+					x--;
+					p += 2 * dx + 2 * dy;
+				}
+				else
+				{
+					p += 2 * dx;
+				}
+				y++;
+				setPixel(x, y, color);
+			} while (y < y2);
+		}
+		else if (smernica > 1) {
+			if (A.y() < B.y()) {
+				y = A.y();	x = A.x();	y2 = B.y();
+				dx = B.x() - A.x();	dy = B.y() - A.y();
+			}
+			else if (A.y() > B.y()) {
+				y = B.y(); x = B.x(); y2 = A.y();
+				dx = A.x() - B.x();	dy = A.y() - B.y();
+			}
+			p = 2 * dx - dy;
+			do {
+				if (p > 0)
+				{
+					x++;
+					p += 2 * dx - 2 * dy;
+				}
+				else
+				{
+					p += 2 * dx;
+				}
+				y++;
+				setPixel(x, y, color);
+			} while (y < y2);
+		}
+	}
 
+	update();
 }
 
 void ViewerWidget::kruznica(QPoint A, QPoint B, QColor color) {
