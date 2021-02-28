@@ -70,20 +70,21 @@ void ImageViewer::ViewerWidgetMouseButtonPress(ViewerWidget* w, QEvent* event)
 			if (ui->DDA->isChecked()) {
 				getCurrentViewerWidget()->usecka_DDA(A, B, farba);
 				prvybod = false;
-				//qDebug() << "mal by kreslit";
 			}
 			if (ui->Bres->isChecked()) {
 				getCurrentViewerWidget()->usecka_Bresenham(A, B, farba);
 				prvybod = false;
-				//qDebug() << "mal by kreslit bresenham";
 			}
 			if (ui->kruznica->isChecked()) {
 				getCurrentViewerWidget()->kruznica(A, B, farba);
 				prvybod = false;
-				//qDebug() << "mal by kreslit kruznicu";
 			}
 			else {
-				//dorobit message ze treba zvolit algoritmus
+				msgBox.setText(u8"Pre vykreslenie zvo¾te algoritmus.");
+				msgBox.setIcon(QMessageBox::Information);
+				msgBox.exec();
+				prvybod = false;
+					
 			}
 		}
 		else {
@@ -294,7 +295,5 @@ void ImageViewer::on_color_clicked()
 	QColor Color = QColorDialog::getColor(Qt::white, this, "Select color");
 	if (Color.isValid()) {
 		farba = Color;
-		//QPoint A(20, 10), B(50, 400);
-		//getCurrentViewerWidget()->usecka_DDA(A, B, Qt::red);
 	}
 }

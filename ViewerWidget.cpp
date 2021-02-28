@@ -85,7 +85,7 @@ void ViewerWidget::paintEvent(QPaintEvent* event)
 	painter.drawImage(area, *img, area);
 }
 
-//dorobene
+//kresliace funkcie
 
 void ViewerWidget::usecka_DDA(QPoint A, QPoint B, QColor color) {
 	int x, y, x2, y2 ;
@@ -273,5 +273,25 @@ void ViewerWidget::usecka_Bresenham(QPoint A, QPoint B, QColor color) {
 }
 
 void ViewerWidget::kruznica(QPoint A, QPoint B, QColor color) {
-
+	int a = abs(A.x() - B.x()), b = abs(A.y() - B.y()), r = sqrt((a * a) + (b * b)),
+		p = 1 - r, x = 0, y = r, dvaX = 3, dvaY = 2 * r + 2;
+	do {
+		setPixel(x+A.x(), y+A.y(), color);
+		setPixel(-x + A.x(), y + A.y(), color);
+		setPixel(-x + A.x(), -y + A.y(), color);
+		setPixel(x + A.x(), -y + A.y(), color);
+		setPixel(y + A.x(), x + A.y(), color);
+		setPixel(-y + A.x(), x + A.y(), color);
+		setPixel(-y + A.x(), -x + A.y(), color);
+		setPixel(y + A.x(), -x + A.y(), color);
+		if (p > 0) {
+			p += -dvaY;
+			y--;
+			dvaY += -2;
+		}
+		p += dvaX;
+		dvaX += 2;
+		x++;
+	} while (x < y);
+	update();
 }
