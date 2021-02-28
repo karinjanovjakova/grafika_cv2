@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>ImageViewerClass</class>
  <widget class="QMainWindow" name="ImageViewerClass">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -20,13 +23,27 @@
       <property name="title">
        <string>Nastavenia</string>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
+      <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <widget class="QPushButton" name="color">
-         <property name="text">
-          <string>Zmena farby</string>
-         </property>
-        </widget>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QPushButton" name="color">
+           <property name="text">
+            <string>Zmena farby</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="farba">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item>
         <widget class="QGroupBox" name="groupBox_2">

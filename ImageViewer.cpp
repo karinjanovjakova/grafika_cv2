@@ -5,6 +5,7 @@ ImageViewer::ImageViewer(QWidget* parent)
 {
 	ui->setupUi(this);
 	openNewTabForImg(new ViewerWidget("default", QSize(500, 500)));
+	ui->farba->setStyleSheet("background-color: black");
 }
 
 //ViewerWidget functions
@@ -71,11 +72,11 @@ void ImageViewer::ViewerWidgetMouseButtonPress(ViewerWidget* w, QEvent* event)
 				getCurrentViewerWidget()->usecka_DDA(A, B, farba);
 				prvybod = false;
 			}
-			if (ui->Bres->isChecked()) {
+			else if (ui->Bres->isChecked()) {
 				getCurrentViewerWidget()->usecka_Bresenham(A, B, farba);
 				prvybod = false;
 			}
-			if (ui->kruznica->isChecked()) {
+			else if (ui->kruznica->isChecked()) {
 				getCurrentViewerWidget()->kruznica(A, B, farba);
 				prvybod = false;
 			}
@@ -295,5 +296,7 @@ void ImageViewer::on_color_clicked()
 	QColor Color = QColorDialog::getColor(Qt::white, this, "Select color");
 	if (Color.isValid()) {
 		farba = Color;
+		QString qss = QString("background-color: %1 ").arg(Color.name());
+		ui->farba->setStyleSheet(qss);
 	}
 }
